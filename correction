@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/logo_gpha.png">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+
+</head>
+<body>
+    <div class="container">
+        <aside id="sidebar">
+            <img src="images/logo_gpha.png" alt="User Avatar" class="avatar">
+            <div class="sidebar-title">
+                <div class="sidebar-brand">Menu</div>
+            </div>
+            <nav>
+                <a class="active">📊 Dashboard</a>
+                <a>📄 Generate Report</a>
+                <a>🛠️ Toolbox</a>
+                <a>📦 Inventory</a>
+                <a>📈 Reports</a>
+                <a>⚙️ Settings</a>
+                <a>👤 Profile</a>
+              </nav>
+            <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </aside>
+        
+        <main class="main-content">
+            <header class="header">
+              <h1>Dashboard</h1>
+            </header>
+            <section class="stats">
+                <div class="card"><h3>Total Projects</h3><p>18</p></div>
+                <div class="card"><h3>Engineers</h3><p>56</p></div>
+                <div class="card"><h3>Revenue</h3><p>$120,000</p></div>
+                <div class="card"><h3>Completed Tasks</h3><p>312</p></div>
+              </section>
+        
+              <section class="charts">
+                <div class="chart" id="projectProgress">
+                  <h3>Project Progress</h3>
+                  <canvas id="progressChart"></canvas>
+                </div>
+                <div class="chart" id="revenueChart">
+                  <h3>Revenue</h3>
+                  <canvas id="lineChart"></canvas>
+                </div>
+              </section>
+        
+              <section class="lists">
+                <div class="list">
+                  <h3>Recent Projects</h3>
+                  <ul>
+                    <li>Project Alpha</li>
+                    <li>Project Beta</li>
+                    <li>Project Gamma</li>
+                    <li>Project Delta</li>
+                    <li>Project Epsilon</li>
+                  </ul>
+                </div>
+                <div class="list">
+                  <h3>Assigned Engineers</h3>
+                  <ul>
+                    <li>John Doe</li>
+                    <li>Jane Smith</li>
+                    <li>Emily Johnson</li>
+                    <li>Michael Brown</li>
+                    <li>Sarah Wilson</li>
+                  </ul>
+                </div>
+              </section>
+        
+        
+            
+            
+
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    <script src="server.js"></script>
+</body>
+</html>

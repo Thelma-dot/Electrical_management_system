@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link rel="icon" type="image/png" href="images/logo_gpha.png">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+        <img src="images/logo_gpha.png" alt="User Avatar" class="avatar">
+        <div class="sidebar-brand">Menu</div>
+      <nav>
+        <a href="file:///C:/Users/ACHAMAA/Desktop/Electrical%20Management%20System/dashboard.html">📊 Dashboard</a>
+        <a href="file:///C:/Users/ACHAMAA/Desktop/Electrical%20Management%20System/generate_report.html">📄 Generate Report</a>
+        <a href="file:///C:/Users/ACHAMAA/Desktop/Electrical%20Management%20System/tool_box.html">🛠️ Toolbox</a>
+        <a href="file:///C:/Users/ACHAMAA/Desktop/Electrical%20Management%20System/inventory.html">📦 Inventory</a>
+        <a class="active">⚙️ Settings</a>
+        <a href="file:///C:/Users/ACHAMAA/Desktop/Electrical%20Management%20System/profile.html">👤 Profile</a>
+        <a href="file:///C:/Users/ACHAMAA/Desktop/Electrical%20Management%20System/index.html">🚪 Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="header">
+        <h1>Settings</h1>
+      </header>
+      <div class="settings-container" id="settingsContainer">
+        <!-- Language Settings -->
+        <div class="settings-section">
+          <h2>🌐 Language</h2>
+          <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="es">Spanish</option>
+          </select>
+        </div>
+
+        <!-- Font Size -->
+        <div class="settings-section">
+          <h2>🔤 Font Size</h2>
+          <select id="fontSizeSelect">
+            <option value="font-small">Small</option>
+            <option value="font-medium" selected>Medium</option>
+            <option value="font-large">Large</option>
+          </select>
+        </div>
+
+        <!-- Dark Mode -->
+        <div class="settings-section">
+          <h2>🌙 Dark Mode</h2>
+          <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+        </div>
+
+        <!-- Help -->
+        <div class="settings-section">
+          <h2>❓ Help</h2>
+          <p>If you need help, contact the IT support team or refer to the user manual provided with the system.</p>
+        </div>
+
+        <!-- About -->
+        <div class="settings-section">
+          <h2>ℹ️ About</h2>
+          <p>This Electrical Management System was developed to streamline reporting and operations. Version 1.0. Developed by Thelma 💡</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+
+
+
+      <script src="dash.js"></script>
+</body>
+</html>
