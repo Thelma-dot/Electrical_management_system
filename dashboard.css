@@ -521,8 +521,21 @@ button[type="submit"]:hover {
   font-size: 1.2rem;
 }
 
+/* Base font sizes */
+body.small-font {
+  font-size: 12px; /* Adjust this value */
+}
+
+body.medium-font {
+  font-size: 16px; /* Adjust this value */
+}
+
+body.large-font {
+  font-size: 20px; /* Adjust this value */
+}
 
 
+// dark mode //
 .dark-mode {
   background-color: #1e1e1e;
   color: #f0f0f0;
@@ -558,4 +571,71 @@ button[type="submit"]:hover {
 .settings-section input {
   padding: 5px;
   margin-right: 10px;
+}
+
+
+
+body.dark-mode {
+  background: #1a202c;
+  color: #e2e8f0;
+}
+
+.dark-mode .sidebar {
+  background: #111827;
+  color: #f1f5f9;
+}
+
+.dark-mode .sidebar nav a {
+  color: #f1f5f9;
+}
+
+.dark-mode .sidebar nav a.active,
+.dark-mode .sidebar nav a:hover {
+  background: #374151;
+}
+
+.dark-mode .main-content,
+.dark-mode .card,
+.dark-mode .chart,
+.dark-mode .list,
+.dark-mode .left-section,
+.dark-mode .right-section,
+.dark-mode #generatedReport,
+.dark-mode #reportTable,
+.dark-mode form {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+.dark-mode .card h3,
+.dark-mode .list li,
+.dark-mode .form-group label,
+.dark-mode .form-group input,
+.dark-mode .form-group textarea,
+.dark-mode label,
+.dark-mode input[type="text"],
+.dark-mode input[type="date"],
+.dark-mode textarea {
+  color: #cbd5e1;
+  background-color: #334155;
+  border-color: #475569;
+}
+
+.dark-mode button,
+.dark-mode .generate-btn {
+  background-color: #2563eb;
+}
+
+.dark-mode button:hover {
+  background-color: #1e40af;
+}
+
+.dark-mode #reportTable th {
+  background-color: #0f172a;
+}
+
+.completed-text {
+  font-weight: bold;
+  color: green;
+  margin-left: 10px;
 }
