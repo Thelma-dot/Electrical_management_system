@@ -37,35 +37,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
+
+
 // reset-password //
 document.addEventListener("DOMContentLoaded", function () {
-  const resetForm = document.querySelector("form");
+  const resetForm = document.getElementById("resetForm");
 
   if (resetForm) {
-      resetForm.addEventListener("submit", function (e) {
-          e.preventDefault();
+    resetForm.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-          const newPassword = document.querySelectorAll("input[type='password']")[0].value;
-          const confirmPassword = document.querySelectorAll("input[type='password']")[1].value;
+      const newPassword = document.getElementById("newPassword").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
 
-          if (newPassword !== confirmPassword) {
-              alert("❌ Passwords do not match.");
-              return;
-          }
+      if (newPassword !== confirmPassword) {
+        alert("❌ Passwords do not match.");
+        return;
+      }
 
-          if (!isStrongPassword(newPassword)) {
-              alert("⚠️ Password must be at least 8 characters, include a number and an uppercase letter.");
-              return;
-          }
+      if (!isStrongPassword(newPassword)) {
+        alert("⚠️ Password must be at least 8 characters, include a number and an uppercase letter.");
+        return;
+      }
 
-          // Save new password to localStorage (as a placeholder for a real backend)
-          localStorage.setItem("resetPassword", newPassword);
-          alert("✅ Password reset successfully! Redirecting to login...");
+      // Simulate saving to backend or localStorage
+      localStorage.setItem("resetPassword", newPassword);
 
-          setTimeout(() => {
-              window.location.href = "index.html";
-          }, 1500);
-      });
+      alert("✅ Password reset successfully! Redirecting to login...");
+
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1500);
+    });
   }
 });
 
@@ -73,6 +80,7 @@ function isStrongPassword(password) {
   const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
   return regex.test(password);
 }
+
 
 
 
@@ -120,7 +128,11 @@ new Chart(ctxLine, {
 
 
 
-// generate report //
+// Function to show the report table
+function showReportTable() {
+  document.getElementById('reportTable').classList.remove('hidden');
+}
+
 // Function to generate a new report
 function generateReport() {
   const title = document.getElementById('reportTitle').value;
@@ -132,105 +144,84 @@ function generateReport() {
   const toolsUsed = document.getElementById('toolsUsed').value;
   const status = document.querySelector('input[name="status"]:checked')?.value;
 
-  // Ensure all fields are filled
   if (!title || !jobDescription || !location || !remarks || !reportDate || !reportTime || !toolsUsed || !status) {
     alert('Please fill in all fields before generating the report.');
     return;
   }
 
-  // Create the report object
-  const report = {
-    title,
-    jobDescription,
-    location,
-    remarks,
-    reportDate,
-    reportTime,
-    toolsUsed,
-    status
-  };
-
-  // Add the report to the table and save it to localStorage
-  addReportToTable(report);
-  saveReportToLocalStorage(report);
-}
-
-// Function to add a report to the table
-function addReportToTable(report) {
-  const tableBody = document.querySelector('#reportsTable tbody');
   const row = document.createElement('tr');
-
   row.innerHTML = `
-    <td>${report.title}</td>
-    <td>${report.jobDescription}</td>
-    <td>${report.location}</td>
-    <td>${report.remarks}</td>
-    <td>${report.reportDate}</td>
-    <td>${report.reportTime}</td>
-    <td>${report.toolsUsed}</td>
-    <td>${report.status}</td>
+    <td>${title}</td>
+    <td>${jobDescription}</td>
+    <td>${location}</td>
+    <td>${remarks}</td>
+    <td>${reportDate}</td>
+    <td>${reportTime}</td>
+    <td>${toolsUsed}</td>
+    <td class="status">${status}</td>
     <td>
       <button class="edit-btn" onclick="editReport(this)">Edit</button>
-      <button class="save-btn hidden" onclick="saveReport(this)">Save</button>
     </td>
   `;
 
-  tableBody.appendChild(row);
+  document.querySelector('#reportTable tbody').appendChild(row);
+  saveReportToLocalStorage({
+    title, jobDescription, location, remarks, reportDate, reportTime, toolsUsed, status
+  });
+  showReportTable();
 }
 
-// Function to save a report to localStorage
+// Save to localStorage
 function saveReportToLocalStorage(report) {
   let reports = JSON.parse(localStorage.getItem('reports')) || [];
   reports.push(report);
   localStorage.setItem('reports', JSON.stringify(reports));
 }
 
-// Function to edit a report
+// Edit/Save toggle
 function editReport(button) {
   const row = button.closest('tr');
   const cells = row.querySelectorAll('td');
 
-  // Make the table cells editable
-  cells.forEach(cell => {
-    if (cell !== cells[cells.length - 1]) {
-      cell.contentEditable = true;
-    }
-  });
+  if (button.textContent === 'Save') {
+    const updatedReport = {
+      title: row.querySelector('#editTitle').value,
+      jobDescription: row.querySelector('#editJobDescription').value,
+      location: row.querySelector('#editLocation').value,
+      remarks: row.querySelector('#editRemarks').value,
+      reportDate: row.querySelector('#editReportDate').value,
+      reportTime: row.querySelector('#editReportTime').value,
+      toolsUsed: row.querySelector('#editToolsUsed').value,
+      status: 'Completed'
+    };
 
-  // Show the save button and hide the edit button
-  button.classList.add('hidden');
-  row.querySelector('.save-btn').classList.remove('hidden');
+    // Update cells with new values
+    cells[0].textContent = updatedReport.title;
+    cells[1].textContent = updatedReport.jobDescription;
+    cells[2].textContent = updatedReport.location;
+    cells[3].textContent = updatedReport.remarks;
+    cells[4].textContent = updatedReport.reportDate;
+    cells[5].textContent = updatedReport.reportTime;
+    cells[6].textContent = updatedReport.toolsUsed;
+    cells[7].textContent = 'Completed';
+    cells[8].innerHTML = `<span class="completed">Completed</span>`;
+
+    updateReportInLocalStorage(updatedReport);
+  } else {
+    // Replace text with input fields
+    cells[0].innerHTML = `<input type="text" id="editTitle" value="${cells[0].textContent}">`;
+    cells[1].innerHTML = `<input type="text" id="editJobDescription" value="${cells[1].textContent}">`;
+    cells[2].innerHTML = `<input type="text" id="editLocation" value="${cells[2].textContent}">`;
+    cells[3].innerHTML = `<input type="text" id="editRemarks" value="${cells[3].textContent}">`;
+    cells[4].innerHTML = `<input type="date" id="editReportDate" value="${cells[4].textContent}">`;
+    cells[5].innerHTML = `<input type="time" id="editReportTime" value="${cells[5].textContent}">`;
+    cells[6].innerHTML = `<input type="text" id="editToolsUsed" value="${cells[6].textContent}">`;
+
+    button.textContent = 'Save';
+  }
 }
 
-// Function to save the edited report
-function saveReport(button) {
-  const row = button.closest('tr');
-  const cells = row.querySelectorAll('td');
-
-  // Get the edited values
-  const updatedReport = {
-    title: cells[0].innerText,
-    jobDescription: cells[1].innerText,
-    location: cells[2].innerText,
-    remarks: cells[3].innerText,
-    reportDate: cells[4].innerText,
-    reportTime: cells[5].innerText,
-    toolsUsed: cells[6].innerText,
-    status: cells[7].innerText
-  };
-
-  // Save the updated report in localStorage
-  updateReportInLocalStorage(updatedReport);
-
-  // Disable editing and show the edit button
-  cells.forEach(cell => {
-    cell.contentEditable = false;
-  });
-  button.classList.add('hidden');
-  row.querySelector('.edit-btn').classList.remove('hidden');
-}
-
-// Function to update the report in localStorage after saving
+// Update edited report in localStorage
 function updateReportInLocalStorage(updatedReport) {
   let reports = JSON.parse(localStorage.getItem('reports')) || [];
   const index = reports.findIndex(report => report.title === updatedReport.title);
@@ -240,11 +231,32 @@ function updateReportInLocalStorage(updatedReport) {
   }
 }
 
-// Function to load saved reports from localStorage
-window.onload = function() {
+// Load from localStorage
+window.onload = function () {
   const savedReports = JSON.parse(localStorage.getItem('reports')) || [];
-  savedReports.forEach(report => addReportToTable(report));
+  savedReports.forEach(report => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${report.title}</td>
+      <td>${report.jobDescription}</td>
+      <td>${report.location}</td>
+      <td>${report.remarks}</td>
+      <td>${report.reportDate}</td>
+      <td>${report.reportTime}</td>
+      <td>${report.toolsUsed}</td>
+      <td class="status">${report.status}</td>
+      <td>
+        ${report.status === 'Completed'
+          ? '<span class="completed">Completed</span>'
+          : '<button class="edit-btn" onclick="editReport(this)">Edit</button>'
+        }
+      </td>
+    `;
+    document.querySelector('#reportTable tbody').appendChild(row);
+    showReportTable();
+  });
 };
+
 
 
 
@@ -388,53 +400,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // settings //
-// Function to apply saved settings from localStorage on page load
-document.addEventListener("DOMContentLoaded", () => {
-  applySavedSettings();
-
-  // Font size change
-  const fontSizeSelect = document.getElementById("fontSizeSelect");
-  fontSizeSelect.addEventListener("change", (e) => {
-    const selectedFont = e.target.value;
-    document.body.classList.remove("font-small", "font-medium", "font-large");
-    document.body.classList.add(selectedFont);
-    localStorage.setItem("fontSize", selectedFont);
-  });
-
-  // Language selection
-  const languageSelect = document.getElementById("languageSelect");
-  languageSelect.addEventListener("change", (e) => {
-    const selectedLanguage = e.target.value;
-    localStorage.setItem("language", selectedLanguage);
-    // You can expand this for multi-language support
-    alert("Language preference saved: " + selectedLanguage);
-  });
+// Dark Mode Toggle
+// Check for saved preference on load
+window.addEventListener('DOMContentLoaded', () => {
+  const isDark = localStorage.getItem('dark-mode') === 'enabled';
+  if (isDark) {
+    document.body.classList.add('dark-mode');
+  }
 });
 
-// Dark Mode Toggle
+// Toggle dark mode and save preference
 function toggleDarkMode() {
-  const isDark = document.body.classList.toggle("dark-mode");
-  localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+  document.body.classList.toggle('dark-mode');
+
+  if (document.body.classList.contains('dark-mode')) {
+    localStorage.setItem('dark-mode', 'enabled');
+  } else {
+    localStorage.setItem('dark-mode', 'disabled');
+  }
 }
+
 
 // Load settings from localStorage
 function applySavedSettings() {
-  const savedFontSize = localStorage.getItem("fontSize");
-  const savedLanguage = localStorage.getItem("language");
   const darkModeStatus = localStorage.getItem("darkMode");
 
-  // Apply font size
-  if (savedFontSize) {
-    document.body.classList.add(savedFontSize);
-    const fontSizeSelect = document.getElementById("fontSizeSelect");
-    if (fontSizeSelect) fontSizeSelect.value = savedFontSize;
-  }
 
-  // Apply language (placeholder for future translation features)
-  if (savedLanguage) {
-    const languageSelect = document.getElementById("languageSelect");
-    if (languageSelect) languageSelect.value = savedLanguage;
-  }
 
   // Apply dark mode
   if (darkModeStatus === "enabled") {
@@ -494,3 +485,51 @@ document.addEventListener("DOMContentLoaded", () => {
     displayDeadlineCountdown(savedDeadline);
   }
 });
+
+
+
+// tool box //
+  document.getElementById('toolboxForm').addEventListener('submit', function (e) {
+    e.preventDefault(); // Stop form from submitting normally
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Collect values
+    const formData = {
+      WorkActivity: document.getElementById('workActivity').value,
+      Date: document.getElementById('date').value,
+      WorkLocation: document.getElementById('workLocation').value,
+      NameCompany: document.getElementById('name/company').value,
+      Sign: document.getElementById('ppe').value,
+      PPENo: document.getElementById('ppe').value,
+      ToolsUsed: document.getElementById('toolsUsed').value,
+      Hazards: document.getElementById('hazards').value,
+      Circulars: document.getElementById('circulars').value,
+      RiskAssessment: document.getElementById('riskAssessment').value,
+      Permit: document.getElementById('permit').value,
+      Remarks: document.getElementById('remarks').value,
+      PreparedBy: document.getElementById('preparedBy').value,
+      VerifiedBy: document.getElementById('verifiedBy').value,
+    };
+
+    // Add to PDF
+    let y = 10;
+    doc.setFontSize(12);
+    doc.text("Toolbox Form Submission", 10, y);
+    y += 10;
+
+    for (let key in formData) {
+      doc.text(`${key.replace(/([A-Z])/g, ' $1')}: ${formData[key]}`, 10, y);
+      y += 10;
+      if (y > 280) {
+        doc.addPage();
+        y = 10;
+      }
+    }
+
+    // Save the PDF
+    doc.save('Toolbox_Form.pdf');
+    alert("✅ PDF downloaded successfully!");
+  });
+
